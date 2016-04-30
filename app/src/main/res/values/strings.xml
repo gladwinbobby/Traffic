@@ -4,7 +4,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
-    <string name="title_activity_map">Route</string>
+    <string name="title_activity_map">Direction</string>
+    <string name="title_activity_route">Route</string>
     <string name="phone">Phone</string>
     <string name="vehicle_prompt">Choose a vehicle</string>
     <string-array name="vehicle_entries">
@@ -21,4 +22,5 @@
     <string name="alternate_route">All Routes</string>
     <string name="distance">Distance</string>
     <string name="default_distance">500</string>
+    <string name="route_prompt">Select a route</string>
 </resources>

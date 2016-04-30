@@ -41,8 +41,15 @@
         <activity
             android:name=".MapActivity"
             android:label="@string/title_activity_map"
+            android:parentActivityName=".RouteActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RouteActivity" />
+        </activity>
+        <activity
+            android:name=".RouteActivity"
+            android:label="@string/title_activity_route"
             android:parentActivityName=".MainActivity">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
