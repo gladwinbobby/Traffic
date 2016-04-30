@@ -1,7 +1,7 @@
 package in.codehex.traffic.model;
 
 /**
- * Created by Bobby on 21-01-2016.
+ * Created by codehex-gladwin on 30-04-2016
  */
 public class TrafficItem {
 

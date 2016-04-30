@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -29,103 +31,126 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import in.codehex.traffic.util.AppController;
-import in.codehex.traffic.util.Const;
+import in.codehex.traffic.app.AppController;
+import in.codehex.traffic.app.Config;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
+    Toolbar mToolbar;
     EditText editPhone;
     Spinner spinVehicle;
     FloatingActionButton fabLogin;
-    SharedPreferences sharedPreferences;
-    Intent intent;
-    String phone;
-    String vehicle;
-    int weight;
-    CoordinatorLayout coordinatorLayout;
-    ProgressDialog progressDialog;
+    SharedPreferences userPreferences;
+    Intent mIntent;
+    CoordinatorLayout mCoordinatorLayout;
+    ProgressDialog mProgressDialog;
+    String mPhone, mVehicle;
+    int mWeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        initObjects();
+        prepareObjects();
+    }
 
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
-        editPhone = (EditText) findViewById(R.id.phone);
-        spinVehicle = (Spinner) findViewById(R.id.vehicle);
-        fabLogin = (FloatingActionButton) findViewById(R.id.login);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Config.PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    Snackbar.make(mCoordinatorLayout, "Location access permission granted",
+                            Snackbar.LENGTH_SHORT).show();
+                }
+        }
+    }
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Logging in..");
-        progressDialog.setCancelable(false);
-        progressDialog.setIndeterminate(true);
+    /**
+     * Initialize the objects.
+     */
+    void initObjects() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.layout_coordinator);
+        editPhone = (EditText) findViewById(R.id.edit_phone);
+        spinVehicle = (Spinner) findViewById(R.id.spin_vehicle);
+        fabLogin = (FloatingActionButton) findViewById(R.id.button_login);
 
-        sharedPreferences = getSharedPreferences(Const.pref, MODE_PRIVATE);
+        mProgressDialog = new ProgressDialog(this);
+        userPreferences = getSharedPreferences(Config.PREF_USER, MODE_PRIVATE);
+    }
+
+    /**
+     * Implement and manipulate the objects.
+     */
+    void prepareObjects() {
+        setSupportActionBar(mToolbar);
+        mProgressDialog.setMessage("Logging in..");
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setIndeterminate(true);
 
         fabLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                phone = editPhone.getText().toString();
-                vehicle = spinVehicle.getSelectedItem().toString();
-                switch (vehicle) {
+                mPhone = editPhone.getText().toString();
+                mVehicle = spinVehicle.getSelectedItem().toString();
+                switch (mVehicle) {
                     case "Bike":
-                        weight = 1;
+                        mWeight = 1;
                         break;
                     case "Car":
-                        weight = 2;
+                        mWeight = 2;
                         break;
                     case "Truck":
-                        weight = 3;
+                        mWeight = 3;
                         break;
                     default:
-                        weight = 0;
+                        mWeight = 0;
                         break;
                 }
-                if (!phone.equals("") && phone.length() >= 10) {
+                if (mPhone.length() == 10) {
                     showProgressDialog();
                     processLogin();
-                }
+                } else editPhone.setError(getResources().getString(R.string.error_phone));
             }
         });
 
-        if (!checkPermission())
+        if (checkPermission())
             requestPermission();
     }
 
+    /**
+     * Check for runtime location access permission.
+     *
+     * @return true if permission available else false
+     */
     boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION);
         return result == PackageManager.PERMISSION_GRANTED;
     }
 
+    /**
+     * Request for permission if it is not granted.
+     */
     void requestPermission() {
         if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    Const.PERMISSION_REQUEST_CODE);
+                    Config.PERMISSION_REQUEST_CODE);
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case Const.PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Snackbar.make(coordinatorLayout, "Location access permission granted",
-                            Snackbar.LENGTH_SHORT).show();
-                }
-        }
-    }
-
+    /**
+     * Send the login credentials to the server to authenticate the user.
+     */
     void processLogin() {
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                Const.url, new Response.Listener<String>() {
+                Config.URL_API, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -139,14 +164,16 @@ public class LoginActivity extends AppCompatActivity {
                             message, Toast.LENGTH_SHORT).show();
 
                     if (error == 0) {
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("phone", phone);
-                        editor.putString("vehicle", vehicle);
-                        editor.putInt("weight", weight);
+                        SharedPreferences.Editor editor = userPreferences.edit();
+                        editor.putString(Config.PREF_USER_PHONE, mPhone);
+                        editor.putString(Config.PREF_USER_VEHICLE, mVehicle);
+                        editor.putInt(Config.PREF_USER_WEIGHT, mWeight);
                         editor.apply();
 
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                        mIntent = new Intent(LoginActivity.this, MainActivity.class);
+                        mIntent.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK
+                                | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(mIntent);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -159,35 +186,41 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 Toast.makeText(getApplicationContext(),
-                        "Network error", Toast.LENGTH_SHORT).show();
+                        "Network error - " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
 
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("tag", "login");
-                params.put("phone", phone);
-                params.put("vehicle", vehicle);
-                params.put("weight", String.valueOf(weight));
+                params.put("phone", mPhone);
+                params.put("vehicle", mVehicle);
+                params.put("weight", String.valueOf(mWeight));
 
                 return params;
             }
 
         };
 
-        AppController.getInstance().addToRequestQueue(strReq);
+        AppController.getInstance().addToRequestQueue(strReq, "login");
     }
 
-    private void showProgressDialog() {
-        if (!progressDialog.isShowing()) {
-            progressDialog.show();
+    /**
+     * Display progress bar if it is not being shown.
+     */
+    void showProgressDialog() {
+        if (!mProgressDialog.isShowing()) {
+            mProgressDialog.show();
         }
     }
 
-    private void hideProgressDialog() {
-        if (progressDialog.isShowing()) {
-            progressDialog.dismiss();
+    /**
+     * Hide progress bar if it being displayed.
+     */
+    void hideProgressDialog() {
+        if (mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
         }
     }
 }

@@ -3,31 +3,32 @@
     package="in.codehex.traffic">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="in.codehex.traffic.permission.MAPS_RECEIVE" />
 
     <permission
         android:name="in.codehex.traffic.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
-
-    <uses-permission android:name="in.codehex.traffic.permission.MAPS_RECEIVE" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
 
     <application
-        android:name=".util.AppController"
+        android:name=".app.AppController"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,19 +38,21 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:noHistory="true" />
+            android:screenOrientation="sensorPortrait" />
         <activity
-            android:name=".MapActivity"
+            android:name=".RouteActivity"
             android:label="@string/title_activity_map"
-            android:parentActivityName=".RouteActivity">
+            android:parentActivityName=".RouteActivity"
+            android:screenOrientation="sensorPortrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".RouteActivity" />
         </activity>
         <activity
-            android:name=".RouteActivity"
+            android:name=".MapActivity"
             android:label="@string/title_activity_route"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="sensorPortrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -60,7 +63,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDFixWDALO5Hiw086BQNzqfdz637KXZLm0" />
+            android:value="AIzaSyAP0KI53Eqk8lgQ07wfu8nOFzQrYF-Vo7o" />
     </application>
 
 </manifest>

@@ -23,20 +23,21 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/layout_container"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/appbar"
+        android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/primary_padding">
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/primary_margin">
 
             <AutoCompleteTextView
-                android:id="@+id/source"
+                android:id="@+id/auto_source"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/source"
@@ -44,12 +45,12 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/primary_margin">
 
             <AutoCompleteTextView
-                android:id="@+id/destination"
+                android:id="@+id/auto_destination"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/destination"
@@ -57,12 +58,12 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/primary_margin">
 
             <EditText
-                android:id="@+id/traffic"
+                android:id="@+id/edit_traffic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/traffic"
@@ -72,12 +73,12 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/primary_margin">
 
             <EditText
-                android:id="@+id/distance"
+                android:id="@+id/edit_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/distance"
@@ -87,60 +88,14 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/button_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/primary_margin"
-            android:src="@drawable/ic_arrow_forward_white_24dp"
+                android:layout_margin="@dimen/primary_margin"
+            android:src="@drawable/ic_arrow_forward"
             app:fabSize="normal" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:padding="@dimen/primary_padding">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="@dimen/primary_margin"
-                android:background="@color/accent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/primary_margin"
-                android:text="@string/best_route"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="@dimen/primary_margin"
-                android:background="@color/blue" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/primary_margin"
-                android:text="@string/alternate_route"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

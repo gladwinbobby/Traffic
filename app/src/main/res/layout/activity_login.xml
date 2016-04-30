@@ -2,7 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinator"
+    android:id="@+id/layout_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="in.codehex.traffic.LoginActivity">
@@ -23,19 +23,19 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+            android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/primary_padding">
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/primary_margin">
 
             <EditText
-                android:id="@+id/phone"
+                android:id="@+id/edit_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/phone"
@@ -44,19 +44,19 @@
         </android.support.design.widget.TextInputLayout>
 
         <Spinner
-            android:id="@+id/vehicle"
+            android:id="@+id/spin_vehicle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/vehicle_entries"
-            android:prompt="@string/vehicle_prompt" />
+            android:entries="@array/entries_vehicle"
+            android:prompt="@string/prompt_vehicle" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/login"
+            android:id="@+id/button_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/primary_margin"
-            android:src="@drawable/ic_arrow_forward_white_24dp"
+            android:src="@drawable/ic_arrow_forward"
             app:fabSize="normal" />
 
     </LinearLayout>
