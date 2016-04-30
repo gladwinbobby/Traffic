@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements
                 distance = editDistance.getText().toString();
                 if (source.length() > 2 && destination.length() > 2
                         && !traffic.isEmpty() && !distance.isEmpty()) {
-                    intent = new Intent(getApplicationContext(), MapActivity.class);
+                    intent = new Intent(getApplicationContext(), RouteActivity.class);
                     intent.putExtra("source", source);
                     intent.putExtra("destination", destination);
                     intent.putExtra("traffic", traffic);
